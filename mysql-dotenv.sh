@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#sample .env entry: DATABASE_URL=mysql://user:pass@db:3306/dbname
+#sample .env entry: DATABASE_URL=mysql://user:pass@db:3306/dbname?version=xxx
 
 if [ "$1" != "" ]; then
     DB_ENV_PATH="$1"
@@ -21,6 +21,6 @@ DB_PASSWORD=$(echo "$DATABASE_URL" | sed -e 's/.*\/\/\(.*\)@.*/\1/' | sed 's/.*:
 DB_USER=$(echo "$DATABASE_URL" | sed -e 's/.*\/\/\(.*\)@.*/\1/' | sed 's/:.*//')
 DB_PORT=$(echo "$DATABASE_URL" | sed -e 's/.*@\(.*\)\/.*/\1/' | sed 's/.*://')
 DB_HOST=$(echo "$DATABASE_URL" | sed -e 's/.*@\(.*\)\/.*/\1/' | sed 's/:.*//')
-DB_DATABASE=$(echo "$DATABASE_URL" | sed -e 's/.*\///')
+DB_DATABASE=$(echo "$DATABASE_URL" | sed -e 's/.*\///' | sed 's/?.*//')
 
 mysql -u$DB_USER -p$DB_PASSWORD -h$DB_HOST $DB_DATABASE
